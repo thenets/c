@@ -28,6 +28,11 @@ int * generateRandomArray (int array_size) {
 }
 
 // Selection sort
+//
+// How it works:
+//  - Find the higher value and send it to the final
+//  - Find the 2nd higher value and send it to the final-1
+//  - Find the N higher value and send it to the final-N
 void selectionSortArray (int array_data[], int array_size) {
 	int i, j, higher, tmp;
 	int nIterations=0;
