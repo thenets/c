@@ -4,13 +4,13 @@
 
 
 // =========================================================
-// Selection sort
+// Insertion sort
 //
-// https://en.wikipedia.org/wiki/Selection_sort
+// https://en.wikipedia.org/wiki/Insertion_sort
 // =========================================================
 
 
-// Generate random array with "array_size" elements
+// Cria um vetor com X elementos
 int * generateRandomArray (int array_size) {
 	int i;
 	srand(time(NULL)); // Random seed based on current time
@@ -27,39 +27,41 @@ int * generateRandomArray (int array_size) {
 	return data_array;
 }
 
-// Selection sort
+// Insertion sort
 //
 // How it works:
-//  - Find the higher value and send it to the final
-//  - Find the 2nd higher value and send it to the final-1
-//  - Find the N higher value and send it to the final-N
-void selectionSortArray (int array_data[], int array_size) {
-	int i, j, higher, tmp;
+//  - Check first 	element and move it to the left ordenated position
+//  - Check second 	element and move it to the left ordenated position
+//  - Check third 	element and move it to the left ordenated position
+//  - Check N 		element and move it to the left ordenated position
+void insertionSortArray (int array_data[], int array_size) {
+	int i, j, correctPosition, tmp;
 	int nIterations=0;
 	int nMoves=0;
 	
 	int DEBUG=0;
 	
-	higher = array_data[0];
-	
-	for (j=0; j<array_size; j++) {
+	// Loop between all "array_data" elements
+	for (j=1; j<array_size; j++) {
 		if(DEBUG) printf("\n");
 		
-		for (i=0; i<array_size-j; i++) {
-			if(DEBUG) printf("#");
-			
+		correctPosition = j;
+		
+		// Find correct position
+		for (i=j; i>0; i--) {
+			// Move to the next position
 			if(array_data[i] < array_data[i-1]) {
-				higher = array_data[i];
-				
 				tmp = array_data[i-1];
 				array_data[i-1] = array_data[i];
 				array_data[i] = tmp;
-				
 				nMoves++;
 			}
 			nIterations++;
 		}
-
+	
+		
+		if(DEBUG) printf("LOOP [%2d]", j);
+		if(DEBUG) for(i=0; i<array_size; i++) if(DEBUG) printf("%2d ", array_data[i]);
 	}
 	
 	// DEBUG
@@ -82,7 +84,7 @@ int main () {
 	//for(i=0; i<n_data; i++) data_array[i] = i;
 	
 	// Inverse sequential array
-	//for(i=0; i<n_data; i++) data_array[i] = n_data-i;
+	for(i=0; i<n_data; i++) data_array[i] = n_data-i;
 	
 	// PRINT INPUT
 	if(DEBUG) printf("[INPUT]  ");
@@ -93,7 +95,7 @@ int main () {
 	// =================================================
 	float startTime, endTime, timeElapsed;
 	startTime = (float)clock()/CLOCKS_PER_SEC;
-	selectionSortArray(data_array, n_data);
+	insertionSortArray(data_array, n_data);
 	endTime = (float)clock()/CLOCKS_PER_SEC;
 	timeElapsed = endTime - startTime;
 	// =================================================
