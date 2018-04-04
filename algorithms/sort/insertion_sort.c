@@ -10,7 +10,7 @@
 // =========================================================
 
 
-// Cria um vetor com X elementos
+// Generate random array with "array_size" elements
 int * generateRandomArray (int array_size) {
 	int i;
 	srand(time(NULL)); // Random seed based on current time
