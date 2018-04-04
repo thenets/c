@@ -3,6 +3,13 @@
 #include <time.h>
 
 
+// =========================================================
+// Bubble sort
+//
+// https://en.wikipedia.org/wiki/Bubble_sort
+// =========================================================
+
+
 
 // Cria um vetor com X elementos
 int * generateRandomArray (int array_size) {
@@ -21,8 +28,8 @@ int * generateRandomArray (int array_size) {
 	return data_array;
 }
 
-// Bubble sort
-void bubbleSortArray (int array_data[], int array_size) {
+// Insertion sort
+void insertionSortArray (int array_data[], int array_size) {
 	int i, j, higher, tmp;
 	int nIterations=0;
 	int nMoves=0;
@@ -72,7 +79,7 @@ int main () {
 	}
 	
 	// Sort
-	bubbleSortArray(data_array, n_data);
+	insertionSortArray(data_array, n_data);
 	
 	
 	// Print sorted array
