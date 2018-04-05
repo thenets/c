@@ -23,6 +23,21 @@
   mergeSort(x, inicio, fim, meio) -> função que ordena(intercala)
 
   ```
+  ```
+      void mergeSort(x inicio, fim){
+
+        int meio;
+
+        if(inicio < fim){
+          meio = (inicio + fim)/2;
+          mergeSort(x, inicio, meio);
+          mergeSort(x, meio+1, fim);
+          merge(x, inicio, fim, meio);
+        }
+      }
+
+  ```
+
 
 * Função mergeSort()
   - dividir o vetor em dois (abstrato)
@@ -39,18 +54,3 @@
     - obter: inicio e inicio2 (indice vão percorrer os subvetores)
     - armazenar os elementos ordenados = aux[]
       - positivo: (indice que percorre o aux[])
-
-  ```
-      void mergeSort(x inicio, fim){
-
-        int meio;
-
-        if(inicio < fim){
-          meio = (inicio + fim)/2;
-          mergeSort(x, inicio, meio);
-          mergeSort(x, meio+1, fim);
-          merge(x, inicio, fim, meio);
-        }
-      }
-
-  ```
