@@ -5,6 +5,8 @@
 #include "com112_sort.h"
 #include "com112_file.h"
 
+#define REPORTS_SIZE 3 // Number of sort methods
+
 #include <string.h>
 
 // Headers
@@ -12,6 +14,11 @@ int * generateRandomArray (int array_size);
 
 
 void menu(int array_data[], int array_size) {
+  int moves, iterations;
+  float benchmark_time;
+  int reports_size = REPORTS_SIZE;
+  struct report_struct reports_array[reports_size-1];
+
   int n = 5, i;
   int V[n], opcao, n_comp, n_mov;
   
@@ -23,53 +30,84 @@ void menu(int array_data[], int array_size) {
     
     // menu de opções
     printf("\n--------------------------------------------------------- \n");
-    printf(" Escolha uma opção no menu para ordenação: \n");
-    printf("\n 1. Bubble Sort \n");
-    printf(" 2. Bubble Sort Melhorado Versão 1 \n");
-    printf(" 3. Bubble Sort Melhorado Versão 2 \n");
-    printf(" 4. Insertion Sort \n");
-    printf(" 5. Sair \n\n Opção: ");
+    printf(" Escolha uma opção no menu para ordenação: \n\n");
+    printf(" 1. Bubble Sort \n");
+    printf(" 2. Selection Sort \n");
+    printf(" 3. Insertion Sort \n");
+    printf(" 4. Merge Sort \n");
+    printf(" 5. Quick Sort \n");
+    printf(" 6. Todos os métodos \n");
+    printf(" 7. Sair \n\n Opção: ");
     scanf("%i", &opcao);
     printf("--------------------------------------------------------- \n");
     
-    if(opcao != 5)
-    {  
-      // carrega os números no vetor
-      printf("\nDigite %i números para serem ordenados: \n", n);
-      for(i=0;i<n;i++) scanf("%i", &V[i]);
-      
+    if(opcao < 7)
+    {        
       // ordena o vetor em ordem crescente
       switch(opcao){
-        case 1: 
-                //bubbleSort(V, n, &n_comp, &n_mov);
+        case 1: // Bubble Sort
+                bubbleSortArray(array_data, array_size, &moves, &iterations, &benchmark_time);
+                strcpy(reports_array[0].sortName, "Bubble Sort");
+                reports_array[0].moves = moves;
+                reports_array[0].iterations = iterations;
+                reports_array[0].benchmark_time = benchmark_time;
+                relatorio(array_size, "com112_relatorio.txt", reports_array, 1);
                 break;
-        case 2: 
-                //bubbleSort1(V, n, &n_comp, &n_mov);
-                break;   
-        case 3: 
-                //bubbleSort2(V, n, &n_comp, &n_mov);
-                break; 
-        case 4: 
-                //insertionSort(V, n, &n_comp, &n_mov);
+
+        case 2: // Selection Sort
+                selectionSortArray(array_data, array_size, &moves, &iterations, &benchmark_time);
+                strcpy(reports_array[0].sortName, "Selection Sort");
+                reports_array[0].moves = moves;
+                reports_array[0].iterations = iterations;
+                reports_array[0].benchmark_time = benchmark_time;
+                relatorio(array_size, "com112_relatorio.txt", reports_array, 1);
+                break;
+
+        case 3: // Insertion Sort
+                insertionSortArray(array_data, array_size, &moves, &iterations, &benchmark_time);
+                strcpy(reports_array[0].sortName, "Insertion Sort");
+                reports_array[0].moves = moves;
+                reports_array[0].iterations = iterations;
+                reports_array[0].benchmark_time = benchmark_time;
+                relatorio(array_size, "com112_relatorio.txt", reports_array, 1);
+                break;
+
+        case 4: // Merge Sort
+                printf("Not implemented yet...\n");
+                break;
+
+        case 5: // Quick Sort
+                printf("Not implemented yet...\n");
+                break;
+
+        case 6: // All
+                bubbleSortArray(array_data, array_size, &moves, &iterations, &benchmark_time);
+                strcpy(reports_array[0].sortName, "Bubble Sort");
+                reports_array[0].moves = moves;
+                reports_array[0].iterations = iterations;
+                reports_array[0].benchmark_time = benchmark_time;
+
+                selectionSortArray(array_data, array_size, &moves, &iterations, &benchmark_time);
+                strcpy(reports_array[1].sortName, "Selection Sort");
+                reports_array[1].moves = moves;
+                reports_array[1].iterations = iterations;
+                reports_array[1].benchmark_time = benchmark_time;
+
+                insertionSortArray(array_data, array_size, &moves, &iterations, &benchmark_time);
+                strcpy(reports_array[2].sortName, "Insertion Sort");
+                reports_array[2].moves = moves;
+                reports_array[2].iterations = iterations;
+                reports_array[2].benchmark_time = benchmark_time;
+
+                relatorio(array_size, "com112_relatorio.txt", reports_array, reports_size);
                 break;    
       }
       
-      // mostra o vetor ordenado
-      printf("\n---------------------------------------------------------");
-      printf("\n Vetor ordenado: ");
-      for(i=0;i<=4;i++)  printf("%i ", V[i]);
-      
-      // mostra o número de comparação e movimentações executadas
-      printf("\n Tamanho do vetor: %i ", n);
-      printf("\n Número de comparações: %i ", n_comp);
-      printf("\n Número de movimentações: %i ", n_mov);
-      printf("\n---------------------------------------------------------\n\n");
-   
     }else{
-        printf("\nFinalizando...\n\n");
+        // nothing...
     }
     
-  }while(opcao != 5);
+  }while(opcao < 7);
 }
 
 
@@ -89,6 +127,10 @@ int main(void) {
   if(DEBUG) printf("[INPUT]  ");
   for(i=0; i<n_data; i++)
     if(DEBUG) printf("%2d ", data_array[i]);
+
+  
+  menu(data_array, n_data);
+  return 0;
 
   // Sort
   // =================================================
