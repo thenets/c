@@ -10,8 +10,77 @@
 #include <string.h>
 
 // Headers
+void menu(int array_data[], int array_size);
 int * generateRandomArray (int array_size);
+int * cloneIntArray(int const * src, size_t len);
 
+
+int main(void) {
+  int i, found, value_to_search, DEBUG=0;
+
+  // Create array of random values
+  int array_size = 10000;
+  int *array_data;
+  array_data = generateRandomArray(array_size);
+  // for(i=0; i<array_size; i++) array_data[i] = i; // Sequential array
+  // for(i=0; i<array_size; i++) array_data[i] = array_size-i; // Inverse sequential array
+  saveArrayToFile(array_data, array_size, "com112_entrada.txt");
+
+  // DEBUG Print input
+  if(DEBUG) printf("[INPUT]  ");
+  for(i=0; i<array_size; i++)
+    if(DEBUG) printf("%2d ", array_data[i]);
+  
+  // menu(array_data, array_size);
+  // return 0;
+
+  // DEBUG
+  // =================================================
+  int moves, iterations;
+  float benchmark_time;
+  int reports_size = 3;
+  struct report_struct reports_array[reports_size-1];
+
+  bubbleSortArray(cloneIntArray(array_data, array_size), array_size, &moves, &iterations, &benchmark_time);
+  strcpy(reports_array[0].sortName, "Bubble Sort");
+  reports_array[0].moves = moves;
+  reports_array[0].iterations = iterations;
+  reports_array[0].benchmark_time = benchmark_time;
+
+  selectionSortArray(cloneIntArray(array_data, array_size), array_size, &moves, &iterations, &benchmark_time);
+  strcpy(reports_array[1].sortName, "Selection Sort");
+  reports_array[1].moves = moves;
+  reports_array[1].iterations = iterations;
+  reports_array[1].benchmark_time = benchmark_time;
+
+  insertionSortArray(cloneIntArray(array_data, array_size), array_size, &moves, &iterations, &benchmark_time);
+  strcpy(reports_array[2].sortName, "Insertion Sort");
+  reports_array[2].moves = moves;
+  reports_array[2].iterations = iterations;
+  reports_array[2].benchmark_time = benchmark_time;
+
+  // Generate report
+  relatorio(array_size, "com112_relatorio.txt", reports_array, reports_size);
+  // =================================================
+
+
+  // DEBUG Print sorted array
+  if(DEBUG) printf("[OUTPUT] ");
+  for(i=0; i<array_size; i++)
+    if(DEBUG) printf("%2d ", array_data[i]);
+
+  saveArrayToFile(array_data, array_size, "com112_saida.txt");
+
+  printf("\n... Done!");
+  return 0;
+  
+}
+
+int * cloneIntArray(int const * src, size_t len) {
+   int * p = malloc(len * sizeof(int));
+   memcpy(p, src, len * sizeof(int));
+   return p;
+}
 
 void menu(int array_data[], int array_size) {
   int moves, iterations;
@@ -46,7 +115,7 @@ void menu(int array_data[], int array_size) {
       // ordena o vetor em ordem crescente
       switch(opcao){
         case 1: // Bubble Sort
-                bubbleSortArray(array_data, array_size, &moves, &iterations, &benchmark_time);
+                bubbleSortArray(cloneIntArray(array_data, array_size), array_size, &moves, &iterations, &benchmark_time);
                 strcpy(reports_array[0].sortName, "Bubble Sort");
                 reports_array[0].moves = moves;
                 reports_array[0].iterations = iterations;
@@ -55,7 +124,7 @@ void menu(int array_data[], int array_size) {
                 break;
 
         case 2: // Selection Sort
-                selectionSortArray(array_data, array_size, &moves, &iterations, &benchmark_time);
+                selectionSortArray(cloneIntArray(array_data, array_size), array_size, &moves, &iterations, &benchmark_time);
                 strcpy(reports_array[0].sortName, "Selection Sort");
                 reports_array[0].moves = moves;
                 reports_array[0].iterations = iterations;
@@ -64,7 +133,7 @@ void menu(int array_data[], int array_size) {
                 break;
 
         case 3: // Insertion Sort
-                insertionSortArray(array_data, array_size, &moves, &iterations, &benchmark_time);
+                insertionSortArray(cloneIntArray(array_data, array_size), array_size, &moves, &iterations, &benchmark_time);
                 strcpy(reports_array[0].sortName, "Insertion Sort");
                 reports_array[0].moves = moves;
                 reports_array[0].iterations = iterations;
@@ -81,19 +150,19 @@ void menu(int array_data[], int array_size) {
                 break;
 
         case 6: // All
-                bubbleSortArray(array_data, array_size, &moves, &iterations, &benchmark_time);
+                bubbleSortArray(cloneIntArray(array_data, array_size), array_size, &moves, &iterations, &benchmark_time);
                 strcpy(reports_array[0].sortName, "Bubble Sort");
                 reports_array[0].moves = moves;
                 reports_array[0].iterations = iterations;
                 reports_array[0].benchmark_time = benchmark_time;
 
-                selectionSortArray(array_data, array_size, &moves, &iterations, &benchmark_time);
+                selectionSortArray(cloneIntArray(array_data, array_size), array_size, &moves, &iterations, &benchmark_time);
                 strcpy(reports_array[1].sortName, "Selection Sort");
                 reports_array[1].moves = moves;
                 reports_array[1].iterations = iterations;
                 reports_array[1].benchmark_time = benchmark_time;
 
-                insertionSortArray(array_data, array_size, &moves, &iterations, &benchmark_time);
+                insertionSortArray(cloneIntArray(array_data, array_size), array_size, &moves, &iterations, &benchmark_time);
                 strcpy(reports_array[2].sortName, "Insertion Sort");
                 reports_array[2].moves = moves;
                 reports_array[2].iterations = iterations;
@@ -110,85 +179,19 @@ void menu(int array_data[], int array_size) {
   }while(opcao < 7);
 }
 
-
-int main(void) {
-  int i, found, value_to_search, DEBUG=0;
-
-
-  // Create array of random values
-  int n_data = 10000;
-  int *data_array;
-  data_array = generateRandomArray(n_data);
-  // for(i=0; i<n_data; i++) data_array[i] = i; // Sequential array
-  // for(i=0; i<n_data; i++) data_array[i] = n_data-i; // Inverse sequential array
-  saveArrayToFile(data_array, n_data, "com112_entrada.txt");
-
-  // DEBUG Print input
-  if(DEBUG) printf("[INPUT]  ");
-  for(i=0; i<n_data; i++)
-    if(DEBUG) printf("%2d ", data_array[i]);
-
-  
-  menu(data_array, n_data);
-  return 0;
-
-  // Sort
-  // =================================================
-  int moves, iterations;
-  float benchmark_time;
-  int reports_size = 3;
-  struct report_struct reports_array[reports_size-1];
-
-  bubbleSortArray(data_array, n_data, &moves, &iterations, &benchmark_time);
-  strcpy(reports_array[0].sortName, "Bubble Sort");
-  reports_array[0].moves = moves;
-  reports_array[0].iterations = iterations;
-  reports_array[0].benchmark_time = benchmark_time;
-
-  selectionSortArray(data_array, n_data, &moves, &iterations, &benchmark_time);
-  strcpy(reports_array[1].sortName, "Selection Sort");
-  reports_array[1].moves = moves;
-  reports_array[1].iterations = iterations;
-  reports_array[1].benchmark_time = benchmark_time;
-
-  insertionSortArray(data_array, n_data, &moves, &iterations, &benchmark_time);
-  strcpy(reports_array[2].sortName, "Insertion Sort");
-  reports_array[2].moves = moves;
-  reports_array[2].iterations = iterations;
-  reports_array[2].benchmark_time = benchmark_time;
-
-  // Generate report
-  relatorio(n_data, "com112_relatorio.txt", reports_array, reports_size);
-  // =================================================
-
-
-  // DEBUG Print sorted array
-  if(DEBUG) printf("[OUTPUT] ");
-  for(i=0; i<n_data; i++)
-    if(DEBUG) printf("%2d ", data_array[i]);
-
-  saveArrayToFile(data_array, n_data, "com112_saida.txt");
-
-  printf("\n... Done!");
-  return 0;
-  
-}
-
-
-
 // Generate random array with "array_size" elements
 int * generateRandomArray (int array_size) {
 	int i;
 	srand(time(NULL)); // Random seed based on current time
 	
 	// Dinamic array
-	int *data_array;
-	data_array= (int*)malloc(sizeof(int)*array_size);
+	int *array_data;
+	array_data= (int*)malloc(sizeof(int)*array_size);
 
 	// Populating array
 	for(i=0; i<array_size; i++) {
-		data_array[i] = rand() % 100000;
+		array_data[i] = rand() % 100000;
 	}
 	
-	return data_array;
+	return array_data;
 }
