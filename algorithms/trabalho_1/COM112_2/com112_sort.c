@@ -240,8 +240,7 @@ void mergeSortArray (int array_data[], int array_size, int *moves, int *iteratio
 }
 
 
-
-
+// Quick sort
 int particiona (int vet[], int inicio, int fim){
      int i, pos = inicio,aux;
      for (i = inicio+1; i <= fim; i++){
@@ -257,7 +256,6 @@ int particiona (int vet[], int inicio, int fim){
      vet[pos] = aux;
 	return pos;
 }
-
 void quicksort(int vet[],int inicio,int fim){
     int meio;
     if(inicio < fim){
@@ -265,4 +263,20 @@ void quicksort(int vet[],int inicio,int fim){
         quicksort(vet,inicio,meio-1);
         quicksort(vet,meio+1,fim);
     }
+}
+void quickSortArray (int array_data[], int array_size, int *moves, int *iterations, float *benchmark_time) {
+	// Start benchmark
+	float startTime, endTime, timeElapsed;
+	startTime = (float)clock()/CLOCKS_PER_SEC;
+
+	quicksort(array_data, 0, array_size);
+
+	// Finish benchmark
+	endTime = (float)clock()/CLOCKS_PER_SEC;
+	timeElapsed = endTime - startTime;
+
+	// Returning data by reference
+	// *moves = nMoves;
+	// *iterations = nIterations;
+	*benchmark_time = timeElapsed;
 }

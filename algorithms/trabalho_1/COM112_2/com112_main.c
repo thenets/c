@@ -5,7 +5,7 @@
 #include "com112_sort.h"
 #include "com112_file.h"
 
-#define REPORTS_SIZE 4 // Number of sort methods
+#define REPORTS_SIZE 5 // Number of sort methods
 
 #include <string.h>
 
@@ -31,42 +31,19 @@ int main(void) {
   for(i=0; i<array_size; i++)
     if(DEBUG) printf("%2d ", array_data[i]);
   
+  float benchmark_time;
+  int moves, iterations, reports_size = REPORTS_SIZE;
   menu(array_data, array_size);
-  return 0;
 
   // DEBUG
   // =================================================
-  int moves, iterations;
-  float benchmark_time;
-  int reports_size = REPORTS_SIZE;
-  struct report_struct reports_array[reports_size-1];
-
-  bubbleSortArray(cloneIntArray(array_data, array_size), array_size, &moves, &iterations, &benchmark_time);
-  strcpy(reports_array[0].sortName, "Bubble Sort");
-  reports_array[0].moves = moves;
-  reports_array[0].iterations = iterations;
-  reports_array[0].benchmark_time = benchmark_time;
-
-  selectionSortArray(cloneIntArray(array_data, array_size), array_size, &moves, &iterations, &benchmark_time);
-  strcpy(reports_array[1].sortName, "Selection Sort");
-  reports_array[1].moves = moves;
-  reports_array[1].iterations = iterations;
-  reports_array[1].benchmark_time = benchmark_time;
-
-  insertionSortArray(cloneIntArray(array_data, array_size), array_size, &moves, &iterations, &benchmark_time);
-  strcpy(reports_array[2].sortName, "Insertion Sort");
-  reports_array[2].moves = moves;
-  reports_array[2].iterations = iterations;
-  reports_array[2].benchmark_time = benchmark_time;
-
-  mergeSortArray(cloneIntArray(array_data, array_size), array_size, &moves, &iterations, &benchmark_time);
-  strcpy(reports_array[3].sortName, "Merge Sort");
-  reports_array[3].moves = moves;
-  reports_array[3].iterations = iterations;
-  reports_array[3].benchmark_time = benchmark_time;
-
-  // Generate report
-  relatorio(array_size, "com112_relatorio.txt", reports_array, reports_size);
+  // struct report_struct reports_array[reports_size-1];
+  // quickSortArray(cloneIntArray(array_data, array_size), array_size, &moves, &iterations, &benchmark_time);
+  // strcpy(reports_array[0].sortName, "quick");
+  // reports_array[0].moves = moves;
+  // reports_array[0].iterations = iterations;
+  // reports_array[0].benchmark_time = benchmark_time;
+  // relatorio(array_size, "com112_relatorio.txt", reports_array, 0);
   // =================================================
 
   // DEBUG Print sorted array
@@ -74,8 +51,8 @@ int main(void) {
   for(i=0; i<array_size; i++)
     if(DEBUG) printf("%2d ", array_data[i]);
 
-  // Sort original array and save to file
-  mergeSortArray(array_data, array_size, &moves, &iterations, &benchmark_time);
+  // Sort with Quick Sort the original array and save output to file
+  quickSortArray(array_data, array_size, &moves, &iterations, &benchmark_time);
   saveArrayToFile(array_data, array_size, "com112_saida.txt");
 
   printf("\n... Done!");
@@ -156,7 +133,12 @@ void menu(int array_data[], int array_size) {
                 break;
 
         case 5: // Quick Sort
-                printf("Not implemented yet...\n");
+                quickSortArray(cloneIntArray(array_data, array_size), array_size, &moves, &iterations, &benchmark_time);
+                strcpy(reports_array[0].sortName, "Quick Sort");
+                reports_array[0].moves = moves;
+                reports_array[0].iterations = iterations;
+                reports_array[0].benchmark_time = benchmark_time;
+                relatorio(array_size, "com112_relatorio.txt", reports_array, 1);
                 break;
 
         case 6: // All
@@ -183,6 +165,13 @@ void menu(int array_data[], int array_size) {
                 reports_array[3].moves = moves;
                 reports_array[3].iterations = iterations;
                 reports_array[3].benchmark_time = benchmark_time;
+                relatorio(array_size, "com112_relatorio.txt", reports_array, 1);
+
+                quickSortArray(cloneIntArray(array_data, array_size), array_size, &moves, &iterations, &benchmark_time);
+                strcpy(reports_array[4].sortName, "Quick Sort");
+                reports_array[4].moves = moves;
+                reports_array[4].iterations = iterations;
+                reports_array[4].benchmark_time = benchmark_time;
                 relatorio(array_size, "com112_relatorio.txt", reports_array, 1);
 
                 relatorio(array_size, "com112_relatorio.txt", reports_array, reports_size);
