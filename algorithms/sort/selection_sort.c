@@ -10,23 +10,6 @@
 // =========================================================
 
 
-// Generate random array with "array_size" elements
-int * generateRandomArray (int array_size) {
-	int i;
-	srand(time(NULL)); // Random seed based on current time
-	
-	// Dinamic array
-	int *data_array;
-	data_array= (int*)malloc(sizeof(int)*array_size);
-
-	// Populating array
-	for(i=0; i<array_size; i++) {
-		data_array[i] = rand() % 1000;
-	}
-	
-	return data_array;
-}
-
 // Selection sort
 //
 // How it works:

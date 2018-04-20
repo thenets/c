@@ -1,133 +1,134 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-/*****************************************************************************************/
-/** Metodo de ordenacao Bubble Sort (ordem crescente)                                    */
-/*****************************************************************************************/
-void bubbleSort(int *V, int n, int *n_comp, int *n_mov){
 
-  int aux;  
-  
-  // laço com a quantidade de elementos do vetor
-  for(int i=0;i<n;i++)
-  {
-    // laço que percorre da primeira à penúltima posição do vetor
-    for(int j=0;j<(n-1);j++)
-    {
-      // acrescenta 1 comparação
-      (*n_comp)++; 
-      
-      if(V[j] > V[j+1]){
-        
-        // acrescenta 1 movimentação
-        (*n_mov)++;
-        
-        aux = V[j];
-        V[j] = V[j+1];
-        V[j+1] = aux;
-      }
-    }
-  }
-}
-
-
-/*****************************************************************************************/
-/** Metodo de ordenacao Bubble Sort melhorado versão 1 (ordem crescente)                 */
-/*****************************************************************************************/
-void bubbleSort1(int *V, int n, int *n_comp, int *n_mov){
-
-  int aux;
-  
-  // laço com a quantidade de elementos do vetor - 1
-  for(int i=1;i<n;i++)
-  {
-    // laço que percorre da última posição à posição i do vetor
-    for(int j=(n-1);j>=i;j--)
-    {
-      // acrescenta 1 comparação
-      (*n_comp)++; 
-      
-      if(V[j] < V[j-1]){
-        
-        // acrescenta 1 movimentação
-        (*n_mov)++;
-        
-        aux = V[j];
-        V[j] = V[j-1];
-        V[j-1] = aux;
-      }
-    }
-  }
-}
-
-
-/*****************************************************************************************/
-/** Metodo de ordenacao Bubble Sort melhorado versão 2 (ordem crescente)                 */
-/*****************************************************************************************/
-void bubbleSort2(int *V, int n, int *n_comp, int *n_mov){
-
-  int i, aux;
-  int houve_troca = 1;
-  
-  // laço com a quantidade de elementos do vetor e enquanto houver troca
-  while(i <= n && houve_troca)
-  {
-    houve_troca = 0;
-    
-    // laço que percorre da primeira à penúltima posição do vetor
-    for(int j=0;j<(n-1);j++)
-    {
-      // acrescenta 1 comparação
-      (*n_comp)++; 
-      
-      if(V[j] > V[j+1]){
-        
-        // sinaliza que houve troca nesta iteração
-        houve_troca = 1;
-        
-         // acrescenta 1 movimentação
-        (*n_mov)++;
-        
-        aux = V[j];
-        V[j] = V[j+1];
-        V[j+1] = aux;
-      }
-    }
-    i++;
-  }
+// Selection sort
+//
+// How it works:
+//  - Check if i[1] is lower than i[0],   switch if is true
+//  - Check if i[2] is lower than i[1],   switch if is true
+//  - Check if i[3] is lower than i[2],   switch if is true
+//  - Check if i[4] is lower than i[3],   switch if is true
+//  - Check if i[n] is lower than i[n-1], switch if is true
+void bubbleSortArray (int array_data[], int array_size) {
+	int i, j, higher, tmp, hasMove;
+	int nIterations=0;
+	int nMoves=0;
+	
+	int DEBUG=0;
+	
+	higher = array_data[0];
+	
+	hasMove=1;
+	while(hasMove){
+		hasMove=0;
+		for (i=1; i<array_size; i++) {
+			if(array_data[i] < array_data[i-1]) {
+				higher = array_data[i];
+				
+				tmp = array_data[i-1];
+				array_data[i-1] = array_data[i];
+				array_data[i] = tmp;
+				
+				nMoves++;
+				hasMove=1;
+			}
+			nIterations++;
+		}
+		
+		if(DEBUG) printf("\n[LOOP %2d]", i);
+		if(DEBUG) for(j=0; j<array_size; j++) if(DEBUG) printf("%2d ", array_data[j]);
+	}
+	
+	// DEBUG
+	if(DEBUG) printf("\nHigher     : %d", array_data[array_size-1]);
+	if(DEBUG) printf("\nIterations : %d", nIterations);
+	if(DEBUG) printf("\nMoves      : %d", nMoves);
 }
 
 
 
-/*****************************************************************************************/
-/** Metodo de ordenacao Insertion Sort (ordem crescente)                                 */
-/*****************************************************************************************/
-void insertionSort(int *V, int n, int *n_comp, int *n_mov){
+// Insertion sort
+//
+// How it works:
+//  - Check first 	element and move it to the left ordenated position
+//  - Check second 	element and move it to the left ordenated position
+//  - Check third 	element and move it to the left ordenated position
+//  - Check N 		element and move it to the left ordenated position
+void insertionSortArray (int array_data[], int array_size) {
+	int i, j, correctPosition, tmp;
+	int nIterations=0;
+	int nMoves=0;
+	
+	int DEBUG=0;
+	
+	// Loop between all "array_data" elements
+	for (j=1; j<array_size; j++) {
+		if(DEBUG) printf("\n");
+		
+		correctPosition = j;
+		
+		// Find correct position
+		for (i=j; i>0; i--) {
+			// Move to the next position
+			if(array_data[i] < array_data[i-1]) {
+				tmp = array_data[i-1];
+				array_data[i-1] = array_data[i];
+				array_data[i] = tmp;
+				nMoves++;
+			}
+			nIterations++;
+		}
+	
+		
+		if(DEBUG) printf("LOOP [%2d]", j);
+		if(DEBUG) for(i=0; i<array_size; i++) if(DEBUG) printf("%2d ", array_data[i]);
+	}
+	
+	// DEBUG
+	if(DEBUG) printf("\nHigher     : %d", array_data[array_size-1]);
+	if(DEBUG) printf("\nIterations : %d", nIterations);
+	if(DEBUG) printf("\nMoves      : %d", nMoves);
+}
 
-  int eleito, j;  
-  
-  // laço com a quantidade de elementos do vetor - 1
-  for(int i=1;i<n;i++)
-  {
-    eleito = V[i];
-    j = i - 1;
-    
-    // acrescenta 1 comparação
-    (*n_comp)++; 
-    
-    // laço que percorre os elementos à esquerda do número eleito ou até encontrar a posição para recolocação do eleito em ordem crescente
-    while(j >= 0 && V[j] > eleito)
-    {
-      // acrescenta 1 comparação
-      (*n_comp)++; 
-      
-      // acrescenta 1 comparação
-      (*n_mov)++; 
-      
-      V[j+1] = V[j];
-      j--;
-    }
-    
-    V[j+1] = eleito;
-  }
+
+// Selection sort
+//
+// How it works:
+//  - Find the higher value and send it to the final
+//  - Find the 2nd higher value and send it to the final-1
+//  - Find the N higher value and send it to the final-N
+void selectionSortArray (int array_data[], int array_size) {
+	int i, j, higher, tmp;
+	int nIterations=0;
+	int nMoves=0;
+	
+	int DEBUG=0;
+	
+	higher = array_data[0];
+	
+	for (j=0; j<array_size; j++) {
+		if(DEBUG) printf("\n");
+		
+		for (i=0; i<array_size-j; i++) {
+			if(DEBUG) printf("#");
+			
+			if(array_data[i] < array_data[i-1]) {
+				higher = array_data[i];
+				
+				tmp = array_data[i-1];
+				array_data[i-1] = array_data[i];
+				array_data[i] = tmp;
+				
+				nMoves++;
+			}
+			nIterations++;
+		}
+
+	}
+	
+	// DEBUG
+	if(DEBUG) printf("\nHigher     : %d", array_data[array_size-1]);
+	if(DEBUG) printf("\nIterations : %d", nIterations);
+	if(DEBUG) printf("\nMoves      : %d", nMoves);
 }

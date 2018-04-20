@@ -15,6 +15,7 @@ build:
 	chmod +x start
 
 run:
+	rm *.txt
 	./start
 
 build-run: build run
