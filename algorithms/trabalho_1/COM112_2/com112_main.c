@@ -5,7 +5,7 @@
 #include "com112_sort.h"
 #include "com112_file.h"
 
-#define REPORTS_SIZE 3 // Number of sort methods
+#define REPORTS_SIZE 4 // Number of sort methods
 
 #include <string.h>
 
@@ -31,14 +31,14 @@ int main(void) {
   for(i=0; i<array_size; i++)
     if(DEBUG) printf("%2d ", array_data[i]);
   
-  // menu(array_data, array_size);
-  // return 0;
+  menu(array_data, array_size);
+  return 0;
 
   // DEBUG
   // =================================================
   int moves, iterations;
   float benchmark_time;
-  int reports_size = 3;
+  int reports_size = REPORTS_SIZE;
   struct report_struct reports_array[reports_size-1];
 
   bubbleSortArray(cloneIntArray(array_data, array_size), array_size, &moves, &iterations, &benchmark_time);
@@ -59,21 +59,27 @@ int main(void) {
   reports_array[2].iterations = iterations;
   reports_array[2].benchmark_time = benchmark_time;
 
+  mergeSortArray(cloneIntArray(array_data, array_size), array_size, &moves, &iterations, &benchmark_time);
+  strcpy(reports_array[3].sortName, "Merge Sort");
+  reports_array[3].moves = moves;
+  reports_array[3].iterations = iterations;
+  reports_array[3].benchmark_time = benchmark_time;
+
   // Generate report
   relatorio(array_size, "com112_relatorio.txt", reports_array, reports_size);
   // =================================================
-
 
   // DEBUG Print sorted array
   if(DEBUG) printf("[OUTPUT] ");
   for(i=0; i<array_size; i++)
     if(DEBUG) printf("%2d ", array_data[i]);
 
+  // Sort original array and save to file
+  mergeSortArray(array_data, array_size, &moves, &iterations, &benchmark_time);
   saveArrayToFile(array_data, array_size, "com112_saida.txt");
 
   printf("\n... Done!");
   return 0;
-  
 }
 
 int * cloneIntArray(int const * src, size_t len) {
@@ -88,8 +94,7 @@ void menu(int array_data[], int array_size) {
   int reports_size = REPORTS_SIZE;
   struct report_struct reports_array[reports_size-1];
 
-  int n = 5, i;
-  int V[n], opcao, n_comp, n_mov;
+  int opcao, n_comp, n_mov, i;
   
   // Menu
   do{
@@ -142,7 +147,12 @@ void menu(int array_data[], int array_size) {
                 break;
 
         case 4: // Merge Sort
-                printf("Not implemented yet...\n");
+                mergeSortArray(cloneIntArray(array_data, array_size), array_size, &moves, &iterations, &benchmark_time);
+                strcpy(reports_array[0].sortName, "Merge Sort");
+                reports_array[0].moves = moves;
+                reports_array[0].iterations = iterations;
+                reports_array[0].benchmark_time = benchmark_time;
+                relatorio(array_size, "com112_relatorio.txt", reports_array, 1);
                 break;
 
         case 5: // Quick Sort
@@ -168,8 +178,15 @@ void menu(int array_data[], int array_size) {
                 reports_array[2].iterations = iterations;
                 reports_array[2].benchmark_time = benchmark_time;
 
+                mergeSortArray(cloneIntArray(array_data, array_size), array_size, &moves, &iterations, &benchmark_time);
+                strcpy(reports_array[3].sortName, "Merge Sort");
+                reports_array[3].moves = moves;
+                reports_array[3].iterations = iterations;
+                reports_array[3].benchmark_time = benchmark_time;
+                relatorio(array_size, "com112_relatorio.txt", reports_array, 1);
+
                 relatorio(array_size, "com112_relatorio.txt", reports_array, reports_size);
-                break;    
+                break;
       }
       
     }else{
