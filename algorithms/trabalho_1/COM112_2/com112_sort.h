@@ -1,6 +1,3 @@
-void bubbleSort(int *V, int n, int *n_comp, int *n_mov);
-void bubbleSort1(int *V, int n, int *n_comp, int *n_mov);
-void bubbleSort2(int *V, int n, int *n_comp, int *n_mov);
-void insertionSort(int *V, int n, int *n_comp, int *n_mov);
-
-void selectionSortArray (int array_data[], int array_size) ;
+void bubbleSortArray (int array_data[], int array_size, int *moves, int *iterations, float *benchmark_time);
+void selectionSortArray (int array_data[], int array_size, int *moves, int *iterations, float *benchmark_time);
+void insertionSortArray (int array_data[], int array_size, int *moves, int *iterations, float *benchmark_time);

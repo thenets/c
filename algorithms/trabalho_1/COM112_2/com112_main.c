@@ -5,49 +5,14 @@
 #include "com112_sort.h"
 #include "com112_file.h"
 
+#include <string.h>
+
 // Headers
 int * generateRandomArray (int array_size);
 
 
-int main(void) {
-  int i, found, value_to_search, DEBUG=0;
-
-  // Create array of random values
-  int n_data = 10000;
-  int *data_array;
-  data_array = generateRandomArray(n_data);
-  // for(i=0; i<n_data; i++) data_array[i] = i; // Sequential array
-  // for(i=0; i<n_data; i++) data_array[i] = n_data-i; // Inverse sequential array
-  saveArrayToFile(data_array, n_data, "com112_entrada.txt");
-
-  // DEBUG Print input
-  if(DEBUG) printf("[INPUT]  ");
-  for(i=0; i<n_data; i++)
-    if(DEBUG) printf("%2d ", data_array[i]);
-
-  // Sort
-  // =================================================
-  float startTime, endTime, timeElapsed;
-  startTime = (float)clock()/CLOCKS_PER_SEC;
-  selectionSortArray(data_array, n_data);
-  endTime = (float)clock()/CLOCKS_PER_SEC;
-  timeElapsed = endTime - startTime;
-  // =================================================
-
-  printf("\n[BENCHMARK] %.7fs\n", timeElapsed);
-
-  // DEBUG Print sorted array
-  if(DEBUG) printf("[OUTPUT] ");
-  for(i=0; i<n_data; i++)
-    if(DEBUG) printf("%2d ", data_array[i]);
-
-  saveArrayToFile(data_array, n_data, "com112_saida.txt");
-  exit(0);
-
-  return 0;
-  
-  
-  int n = 5;
+void menu(int array_data[], int array_size) {
+  int n = 5, i;
   int V[n], opcao, n_comp, n_mov;
   
   // Menu
@@ -75,13 +40,17 @@ int main(void) {
       
       // ordena o vetor em ordem crescente
       switch(opcao){
-        case 1: bubbleSort(V, n, &n_comp, &n_mov);
+        case 1: 
+                //bubbleSort(V, n, &n_comp, &n_mov);
                 break;
-        case 2: bubbleSort1(V, n, &n_comp, &n_mov);
+        case 2: 
+                //bubbleSort1(V, n, &n_comp, &n_mov);
                 break;   
-        case 3: bubbleSort2(V, n, &n_comp, &n_mov);
+        case 3: 
+                //bubbleSort2(V, n, &n_comp, &n_mov);
                 break; 
-        case 4: insertionSort(V, n, &n_comp, &n_mov);
+        case 4: 
+                //insertionSort(V, n, &n_comp, &n_mov);
                 break;    
       }
       
@@ -101,7 +70,64 @@ int main(void) {
     }
     
   }while(opcao != 5);
-  
+}
+
+
+int main(void) {
+  int i, found, value_to_search, DEBUG=0;
+
+
+  // Create array of random values
+  int n_data = 10000;
+  int *data_array;
+  data_array = generateRandomArray(n_data);
+  // for(i=0; i<n_data; i++) data_array[i] = i; // Sequential array
+  // for(i=0; i<n_data; i++) data_array[i] = n_data-i; // Inverse sequential array
+  saveArrayToFile(data_array, n_data, "com112_entrada.txt");
+
+  // DEBUG Print input
+  if(DEBUG) printf("[INPUT]  ");
+  for(i=0; i<n_data; i++)
+    if(DEBUG) printf("%2d ", data_array[i]);
+
+  // Sort
+  // =================================================
+  int moves, iterations;
+  float benchmark_time;
+  int reports_size = 3;
+  struct report_struct reports_array[reports_size-1];
+
+  bubbleSortArray(data_array, n_data, &moves, &iterations, &benchmark_time);
+  strcpy(reports_array[0].sortName, "Bubble Sort");
+  reports_array[0].moves = moves;
+  reports_array[0].iterations = iterations;
+  reports_array[0].benchmark_time = benchmark_time;
+
+  selectionSortArray(data_array, n_data, &moves, &iterations, &benchmark_time);
+  strcpy(reports_array[1].sortName, "Selection Sort");
+  reports_array[1].moves = moves;
+  reports_array[1].iterations = iterations;
+  reports_array[1].benchmark_time = benchmark_time;
+
+  insertionSortArray(data_array, n_data, &moves, &iterations, &benchmark_time);
+  strcpy(reports_array[2].sortName, "Insertion Sort");
+  reports_array[2].moves = moves;
+  reports_array[2].iterations = iterations;
+  reports_array[2].benchmark_time = benchmark_time;
+
+  // Generate report
+  relatorio(n_data, "com112_relatorio.txt", reports_array, reports_size);
+  // =================================================
+
+
+  // DEBUG Print sorted array
+  if(DEBUG) printf("[OUTPUT] ");
+  for(i=0; i<n_data; i++)
+    if(DEBUG) printf("%2d ", data_array[i]);
+
+  saveArrayToFile(data_array, n_data, "com112_saida.txt");
+
+  printf("\n... Done!");
   return 0;
   
 }
