@@ -1,0 +1,1 @@
+void saveArrayToFile(int array_data[], int array_size, char* file_name);
