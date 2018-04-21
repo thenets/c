@@ -1,53 +1,203 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
+
 #include "com112_sort.h"
+#include "com112_file.h"
 
-int menu(){
-    int n = 5;
-    int V[n], i, n_comp, n_mov;
-    int opcao;
+#define REPORTS_SIZE 5 // Number of sort methods
 
-    if(opcao != 5){
-      // carrega os números no vetor
-      printf("\nDigite %i números para serem ordenados: \n", n);
-      for(i=0;i<n;i++) scanf("%i", &V[i]);
+#include <string.h>
 
-          // ordena o vetor em ordem crescente
-        switch(opcao){
-            case 1: bubbleSort(V, n, &n_comp, &n_mov);
-                    break;
-            case 2: insertionSort(V, n, &n_comp, &n_mov);
-            break;
-        }
-        //relatorio(V, n, &n_comp, &n_mov);
-    }
-    else{
-        printf("\nFinalizando...\n\n");
-        return 0;
-    }
+// Headers
+void menu(int array_data[], int array_size);
+int * generateRandomArray (int array_size);
+int * cloneIntArray(int const * src, size_t len);
 
-    return 1;
+
+int main(void) {
+  int i, found, value_to_search, DEBUG=0;
+
+  // Create array of random values
+  int array_size = 10000;
+  int *array_data;
+  array_data = generateRandomArray(array_size);
+  // for(i=0; i<array_size; i++) array_data[i] = i; // Sequential array
+  // for(i=0; i<array_size; i++) array_data[i] = array_size-i; // Inverse sequential array
+  saveArrayToFile(array_data, array_size, "com112_entrada.txt");
+
+  // DEBUG Print input
+  if(DEBUG) printf("[INPUT]  ");
+  for(i=0; i<array_size; i++)
+    if(DEBUG) printf("%2d ", array_data[i]);
+  
+  float benchmark_time;
+  int moves, iterations, reports_size = REPORTS_SIZE;
+
+  // DEBUG
+  // =================================================
+  //  struct report_struct reports_array[reports_size-1];
+  //  mergeSortArray(cloneIntArray(array_data, array_size), array_size, &moves, &iterations, &benchmark_time);
+  //  strcpy(reports_array[0].sortName, "merge");
+  //  reports_array[0].moves = moves;
+  //  reports_array[0].iterations = iterations;
+  //  reports_array[0].benchmark_time = benchmark_time;
+  //  relatorio(array_size, "com112_relatorio.txt", reports_array, 1);
+  //  return 0;
+  // =================================================
+  
+  menu(array_data, array_size);
+
+  // DEBUG Print sorted array
+  if(DEBUG) printf("[OUTPUT] ");
+  for(i=0; i<array_size; i++)
+    if(DEBUG) printf("%2d ", array_data[i]);
+
+  // Sort with Quick Sort the original array and save output to file
+  quickSortArray(array_data, array_size, &moves, &iterations, &benchmark_time);
+  saveArrayToFile(array_data, array_size, "com112_saida.txt");
+
+  printf("\n... Done!");
+  return 0;
 }
-void relatorio(int *V, int n, int *n_comp, int *n_mov){
-    int i;
-    // mostra o vetor ordenado
-    printf("\n---------------------------------------------------------");
-    printf("\n Vetor ordenado: ");
-    for(i=0;i<=4;i++)  printf("%i ", V[i]);
 
-    // mostra o número de comparação e movimentações executadas
-    printf("\n Tamanho do vetor: %i ", n);
-    printf("\n Número de comparações: %i ", n_comp);
-    printf("\n Número de movimentações: %i ", n_mov);
-    printf("\n---------------------------------------------------------\n\n");
+int * cloneIntArray(int const * src, size_t len) {
+   int * p = malloc(len * sizeof(int));
+   memcpy(p, src, len * sizeof(int));
+   return p;
 }
-main(){
-    int opcao;
 
+void menu(int array_data[], int array_size) {
+  int moves, iterations;
+  float benchmark_time;
+  int reports_size = REPORTS_SIZE;
+  struct report_struct reports_array[reports_size-1];
+
+  int opcao, n_comp, n_mov, i;
+  
+  // Menu
+  do{
+    // zera as variáveis contadoras
+    n_comp = 0;
+    n_mov = 0;
+    
+    // menu de opções
     printf("\n--------------------------------------------------------- \n");
-    printf(" Escolha uma opção no menu para oordenação: \n");
-    printf("\n 1. Bubble Sort \n");
-    printf(" 2. Insertion Sort \n");
+    printf(" Escolha uma opção no menu para ordenação: \n\n");
+    printf(" 1. Bubble Sort \n");
+    printf(" 2. Selection Sort \n");
+    printf(" 3. Insertion Sort \n");
+    printf(" 4. Merge Sort \n");
+    printf(" 5. Quick Sort \n");
+    printf(" 6. Todos os métodos \n");
+    printf(" 7. Sair \n\n Opção: ");
     scanf("%i", &opcao);
-    menu(opcao);
+    printf("--------------------------------------------------------- \n");
+    
+    if(opcao < 7)
+    {        
+      // ordena o vetor em ordem crescente
+      switch(opcao){
+        case 1: // Bubble Sort
+                bubbleSortArray(cloneIntArray(array_data, array_size), array_size, &moves, &iterations, &benchmark_time);
+                strcpy(reports_array[0].sortName, "Bubble Sort");
+                reports_array[0].moves = moves;
+                reports_array[0].iterations = iterations;
+                reports_array[0].benchmark_time = benchmark_time;
+                relatorio(array_size, "com112_relatorio.txt", reports_array, 1);
+                break;
+
+        case 2: // Selection Sort
+                selectionSortArray(cloneIntArray(array_data, array_size), array_size, &moves, &iterations, &benchmark_time);
+                strcpy(reports_array[0].sortName, "Selection Sort");
+                reports_array[0].moves = moves;
+                reports_array[0].iterations = iterations;
+                reports_array[0].benchmark_time = benchmark_time;
+                relatorio(array_size, "com112_relatorio.txt", reports_array, 1);
+                break;
+
+        case 3: // Insertion Sort
+                insertionSortArray(cloneIntArray(array_data, array_size), array_size, &moves, &iterations, &benchmark_time);
+                strcpy(reports_array[0].sortName, "Insertion Sort");
+                reports_array[0].moves = moves;
+                reports_array[0].iterations = iterations;
+                reports_array[0].benchmark_time = benchmark_time;
+                relatorio(array_size, "com112_relatorio.txt", reports_array, 1);
+                break;
+
+        case 4: // Merge Sort
+                mergeSortArray(cloneIntArray(array_data, array_size), array_size, &moves, &iterations, &benchmark_time);
+                strcpy(reports_array[0].sortName, "Merge Sort");
+                reports_array[0].moves = moves;
+                reports_array[0].iterations = iterations;
+                reports_array[0].benchmark_time = benchmark_time;
+                relatorio(array_size, "com112_relatorio.txt", reports_array, 1);
+                break;
+
+        case 5: // Quick Sort
+                quickSortArray(cloneIntArray(array_data, array_size), array_size, &moves, &iterations, &benchmark_time);
+                strcpy(reports_array[0].sortName, "Quick Sort");
+                reports_array[0].moves = moves;
+                reports_array[0].iterations = iterations;
+                reports_array[0].benchmark_time = benchmark_time;
+                relatorio(array_size, "com112_relatorio.txt", reports_array, 1);
+                break;
+
+        case 6: // All
+                bubbleSortArray(cloneIntArray(array_data, array_size), array_size, &moves, &iterations, &benchmark_time);
+                strcpy(reports_array[0].sortName, "Bubble Sort");
+                reports_array[0].moves = moves;
+                reports_array[0].iterations = iterations;
+                reports_array[0].benchmark_time = benchmark_time;
+
+                selectionSortArray(cloneIntArray(array_data, array_size), array_size, &moves, &iterations, &benchmark_time);
+                strcpy(reports_array[1].sortName, "Selection Sort");
+                reports_array[1].moves = moves;
+                reports_array[1].iterations = iterations;
+                reports_array[1].benchmark_time = benchmark_time;
+
+                insertionSortArray(cloneIntArray(array_data, array_size), array_size, &moves, &iterations, &benchmark_time);
+                strcpy(reports_array[2].sortName, "Insertion Sort");
+                reports_array[2].moves = moves;
+                reports_array[2].iterations = iterations;
+                reports_array[2].benchmark_time = benchmark_time;
+
+                mergeSortArray(cloneIntArray(array_data, array_size), array_size, &moves, &iterations, &benchmark_time);
+                strcpy(reports_array[3].sortName, "Merge Sort");
+                reports_array[3].moves = moves;
+                reports_array[3].iterations = iterations;
+                reports_array[3].benchmark_time = benchmark_time;
+
+                quickSortArray(cloneIntArray(array_data, array_size), array_size, &moves, &iterations, &benchmark_time);
+                strcpy(reports_array[4].sortName, "Quick Sort");
+                reports_array[4].moves = moves;
+                reports_array[4].iterations = iterations;
+                reports_array[4].benchmark_time = benchmark_time;
+
+                relatorio(array_size, "com112_relatorio.txt", reports_array, reports_size);
+                break;
+      }
+      
+    }else{
+        // nothing...
+    }
+    
+  }while(opcao < 7);
+}
+
+// Generate random array with "array_size" elements
+int * generateRandomArray (int array_size) {
+	int i;
+	srand(time(NULL)); // Random seed based on current time
+	
+	// Dinamic array
+	int *array_data;
+	array_data= (int*)malloc(sizeof(int)*array_size);
+
+	// Populating array
+	for(i=0; i<array_size; i++) {
+		array_data[i] = rand() % 100000;
+	}
+	
+	return array_data;
 }
