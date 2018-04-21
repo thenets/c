@@ -235,7 +235,9 @@ void mergeSortArray (int array_data[], int array_size, int *moves, int *iteratio
 
 	// Returning data by reference
 	// *moves = nMoves;
+	*moves = -1;
 	// *iterations = nIterations;
+	*iterations = -1;
 	*benchmark_time = timeElapsed;
 }
 
@@ -276,7 +278,8 @@ void quickSortArray (int array_data[], int array_size, int *moves, int *iteratio
 	timeElapsed = endTime - startTime;
 
 	// Returning data by reference
+	*moves = -1;
 	// *moves = nMoves;
-	// *iterations = nIterations;
+	*iterations = -1;
 	*benchmark_time = timeElapsed;
 }

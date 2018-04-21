@@ -165,14 +165,12 @@ void menu(int array_data[], int array_size) {
                 reports_array[3].moves = moves;
                 reports_array[3].iterations = iterations;
                 reports_array[3].benchmark_time = benchmark_time;
-                relatorio(array_size, "com112_relatorio.txt", reports_array, 1);
 
                 quickSortArray(cloneIntArray(array_data, array_size), array_size, &moves, &iterations, &benchmark_time);
                 strcpy(reports_array[4].sortName, "Quick Sort");
                 reports_array[4].moves = moves;
                 reports_array[4].iterations = iterations;
                 reports_array[4].benchmark_time = benchmark_time;
-                relatorio(array_size, "com112_relatorio.txt", reports_array, 1);
 
                 relatorio(array_size, "com112_relatorio.txt", reports_array, reports_size);
                 break;
