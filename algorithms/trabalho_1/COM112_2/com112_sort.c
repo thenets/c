@@ -311,7 +311,6 @@ void quickSortArray (int array_data[], int array_size, int *moves, int *iteratio
 	(*moves) = 0;
 	(*iterations) = 0;
 	quicksort(array_data, 0, array_size, iterations, moves);
-	printf("Quero cafe! %d\n", *iterations);
 
 	// Finish benchmark
 	endTime = (float)clock()/CLOCKS_PER_SEC;
