@@ -33,18 +33,20 @@ int main(void) {
   
   float benchmark_time;
   int moves, iterations, reports_size = REPORTS_SIZE;
-  menu(array_data, array_size);
 
   // DEBUG
   // =================================================
-  // struct report_struct reports_array[reports_size-1];
-  // quickSortArray(cloneIntArray(array_data, array_size), array_size, &moves, &iterations, &benchmark_time);
-  // strcpy(reports_array[0].sortName, "quick");
-  // reports_array[0].moves = moves;
-  // reports_array[0].iterations = iterations;
-  // reports_array[0].benchmark_time = benchmark_time;
-  // relatorio(array_size, "com112_relatorio.txt", reports_array, 0);
+   struct report_struct reports_array[reports_size-1];
+   mergeSortArray(cloneIntArray(array_data, array_size), array_size, &moves, &iterations, &benchmark_time);
+   strcpy(reports_array[0].sortName, "merge");
+   reports_array[0].moves = moves;
+   reports_array[0].iterations = iterations;
+   reports_array[0].benchmark_time = benchmark_time;
+   relatorio(array_size, "com112_relatorio.txt", reports_array, 1);
+   return 0;
   // =================================================
+  
+  menu(array_data, array_size);
 
   // DEBUG Print sorted array
   if(DEBUG) printf("[OUTPUT] ");

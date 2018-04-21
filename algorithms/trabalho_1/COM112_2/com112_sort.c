@@ -234,52 +234,72 @@ void mergeSortArray (int array_data[], int array_size, int *moves, int *iteratio
 	timeElapsed = endTime - startTime;
 
 	// Returning data by reference
-	// *moves = nMoves;
-	*moves = -1;
-	// *iterations = nIterations;
-	*iterations = -1;
 	*benchmark_time = timeElapsed;
 }
 
 
 // Quick sort
-int particiona (int vet[], int inicio, int fim){
-     int i, pos = inicio,aux;
-     for (i = inicio+1; i <= fim; i++){
-         if (vet[i] < vet[inicio]){
-             pos++;
-             aux=vet[i];
-             vet[i]=vet[pos];
-             vet[pos]=aux;
-          }
-      }
-     aux = vet[inicio];
-     vet[inicio] = vet[pos];
-     vet[pos] = aux;
-	return pos;
+int particiona (int V[], int p, int r, int *n_comp, int *n_mov){
+	  int pivo, i, j;
+	  pivo = V[(p+r)/2];
+	  i = p - 1;
+	  j = r + 1;
+	   
+	  while(i < j)
+	  { 
+	    
+	    do
+	    {
+	      j--;
+	      
+	      
+	      (*n_comp)++;
+	      
+	    }while(V[j] > pivo);
+	    
+	  
+	    do
+	    {
+	      i++;
+	    
+	      (*n_comp)++;
+	      
+	    }while(V[i] < pivo);   
+	  
+	    if(i < j)
+	    {
+	      int aux;
+	      aux = V[i];
+	      V[i] = V[j];
+	      V[j] = aux;
+	      
+	      (*n_mov)++; 
+	    }
+	  }
+	  return j;
 }
-void quicksort(int vet[],int inicio,int fim){
+void quicksort(int vet[],int inicio, int fim, int *n_comp, int *n_mov){
     int meio;
     if(inicio < fim){
-        meio = particiona(vet,inicio,fim);
-        quicksort(vet,inicio,meio-1);
-        quicksort(vet,meio+1,fim);
+        meio = particiona(vet,inicio,fim, n_comp, n_mov);
+        quicksort(vet,inicio,meio-1, n_comp, n_mov);
+      	quicksort(vet,meio+1,fim, n_comp, n_mov);
     }
 }
 void quickSortArray (int array_data[], int array_size, int *moves, int *iterations, float *benchmark_time) {
 	// Start benchmark
 	float startTime, endTime, timeElapsed;
 	startTime = (float)clock()/CLOCKS_PER_SEC;
-
-	quicksort(array_data, 0, array_size);
+	
+	(*moves) = 0;
+	(*iterations) = 0;
+	quicksort(array_data, 0, array_size, iterations, moves);
+	printf("Quero cafe! %d\n", *iterations);
 
 	// Finish benchmark
 	endTime = (float)clock()/CLOCKS_PER_SEC;
 	timeElapsed = endTime - startTime;
 
 	// Returning data by reference
-	*moves = -1;
-	// *moves = nMoves;
-	*iterations = -1;
 	*benchmark_time = timeElapsed;
 }
