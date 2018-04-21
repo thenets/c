@@ -175,58 +175,74 @@ void selectionSortArray (int array_data[], int array_size, int *moves, int *iter
 }
 
 
+void merge(int V[], int inicio, int fim, int meio, int *n_comp, int *n_mov){
 
-// Merge sort
-void Merge(int *v, int *c, int i, int m, int f){
-  int z;
-  int iv = i;
-  int ic = m + 1;
-
-  for (z = i; z <= f; z++) {
-        c[z] = v[z];
+  int poslivre, inicio1, inicio2, i;
+  int aux[fim+1];
+  
+  inicio1 = inicio;
+  inicio2 = meio + 1;
+  poslivre = inicio;
+  
+  while(inicio1 <= meio && inicio2 <= fim)
+  { 
+    // acrescenta 1 comparação
+    (*n_comp)++; 
+    
+    if(V[inicio1] <= V[inicio2])
+    {
+      aux[poslivre] = V[inicio1];
+      inicio1++;
+      
+    }else
+    {
+      aux[poslivre] = V[inicio2];
+      inicio2++;
+    }
+    
+    poslivre++;
   }
 
-  z = i;
-
-  while (iv <= m && ic <= f) {
-
-
-    if (c[iv] < c[ic]) v[z++] = c[iv++];
-    else  v[z++] = c[ic++];
+  for(i=inicio1; i<=meio; i++)
+  {
+    aux[poslivre] = V[i];
+    poslivre++;
   }
-
-  while (iv <= m) {
-        v[z++] = c[iv++];
-  }
-
-
-  while (ic <= f) {
-        v[z++] = c[ic++];
-  }
+  
+  for(i=inicio2; i<=fim; i++)
+  {
+    aux[poslivre] = V[i];
+    poslivre++;
+  }  
+  
+  for(i=inicio; i<=fim; i++)
+  {
+    (*n_mov)++; 
+    
+    V[i] = aux[i];
+  }  
+      
 }
-void Sort(int *v, int *c, int i, int f) {
-  if (i >= f) {
-        return;
+
+void mergeSort(int V[], int inicio, int fim, int *n_comp, int *n_mov){
+  
+  int meio;
+  
+  if(inicio < fim){
+    meio = (inicio + fim) / 2;
+    mergeSort(V, inicio, meio, n_comp, n_mov);
+    mergeSort(V, meio+1, fim, n_comp, n_mov);
+    merge(V, inicio, fim, meio, n_comp, n_mov);
   }
-
-  int m = (i + f) / 2;
-
-  Sort(v, c, i, m);
-  Sort(v, c, m + 1, f);
-
-  if (v[m] <= v[m + 1]) {
-        return;
-  }
-
-  Merge(v, c, i, m, f);
+  
 }
 void mergeSortArray (int array_data[], int array_size, int *moves, int *iterations, float *benchmark_time) {
 	// Start benchmark
 	float startTime, endTime, timeElapsed;
 	startTime = (float)clock()/CLOCKS_PER_SEC;
-
+	
 	int *c = malloc(sizeof(int) * array_size);
-	Sort(array_data, c, 0, array_size - 1);
+	mergeSort(array_data, 0, array_size, iterations, moves);
 	free(c);
 
 	// Finish benchmark
@@ -234,6 +250,7 @@ void mergeSortArray (int array_data[], int array_size, int *moves, int *iteratio
 	timeElapsed = endTime - startTime;
 
 	// Returning data by reference
+	// *moves = nMoves;
 	*benchmark_time = timeElapsed;
 }
 
