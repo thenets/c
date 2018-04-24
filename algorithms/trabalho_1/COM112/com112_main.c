@@ -71,7 +71,7 @@ void menu(int array_data[], int array_size) {
   int moves, iterations;
   float benchmark_time;
   int reports_size = REPORTS_SIZE;
-  struct report_struct reports_array[reports_size-1];
+  struct report_struct reports_array[reports_size];
 
   int opcao, n_comp, n_mov, i;
   

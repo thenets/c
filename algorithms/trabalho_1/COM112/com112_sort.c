@@ -237,10 +237,14 @@ void mergeSort(int V[], int inicio, int fim, int *n_comp, int *n_mov){
   
 }
 void mergeSortArray (int array_data[], int array_size, int *moves, int *iterations, float *benchmark_time) {
+	// Clean
+	(*moves) = 0;
+	(*iterations) = 0;
+	
 	// Start benchmark
 	float startTime, endTime, timeElapsed;
 	startTime = (float)clock()/CLOCKS_PER_SEC;
-	
+
 	int *c = malloc(sizeof(int) * array_size);
 	mergeSort(array_data, 0, array_size, iterations, moves);
 	free(c);
@@ -250,7 +254,6 @@ void mergeSortArray (int array_data[], int array_size, int *moves, int *iteratio
 	timeElapsed = endTime - startTime;
 
 	// Returning data by reference
-	// *moves = nMoves;
 	*benchmark_time = timeElapsed;
 }
 
@@ -304,13 +307,17 @@ void quicksort(int vet[],int inicio, int fim, int *n_comp, int *n_mov){
     }
 }
 void quickSortArray (int array_data[], int array_size, int *moves, int *iterations, float *benchmark_time) {
+	// Clean
+	(*moves) = 0;
+	(*iterations) = 0;
+		
 	// Start benchmark
 	float startTime, endTime, timeElapsed;
 	startTime = (float)clock()/CLOCKS_PER_SEC;
 	
-	(*moves) = 0;
-	(*iterations) = 0;
-	quicksort(array_data, 0, array_size, iterations, moves);
+	int start = 0;
+	int end = array_size;
+	quicksort(array_data, start, end, iterations, moves);
 
 	// Finish benchmark
 	endTime = (float)clock()/CLOCKS_PER_SEC;
