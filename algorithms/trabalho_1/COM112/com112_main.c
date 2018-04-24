@@ -89,7 +89,7 @@ void menu(int array_data[], int array_size) {
     printf(" 3. Insertion Sort \n");
     printf(" 4. Merge Sort \n");
     printf(" 5. Quick Sort \n");
-    printf(" 6. Todos os métodos \n");
+    printf(" 6. Gerar relatório de todos os métodos \n");
     printf(" 7. Sair \n\n Opção: ");
     scanf("%i", &opcao);
     printf("--------------------------------------------------------- \n");
