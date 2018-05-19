@@ -14,7 +14,8 @@ function generateRandomArray (nElements, maxValue=100) {
 function bubbleSortArray (original_array_data) {
     var output = [];
     
-    array_data = original_array_data.map(x=>x);
+    array_data = original_array_data.slice(0);
+    output.push(array_data.slice(0));
 
     var hasMove=1;
     var nIterations=0, nMoves=0;
@@ -32,9 +33,7 @@ function bubbleSortArray (original_array_data) {
                 hasMove=1;
 
                 // Append new array state
-                output.push(
-                    array_data.slice(0)
-                );
+                output.push(array_data.slice(0));
 			}
 			nIterations++;
 		}
