@@ -7,7 +7,40 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "hash.c"
+#include <string.h>
+#include "hash.h"
+
+// Headers
+Hash *criarHashing(int tamanho);
+void liberarHashing(Hash *h);
+int buscar(Hash *tabela, int chave, int ender, int funcao, int sond);
+int inserir(Hash *tabela, int chave, int ender, int funcao, int sond);
+int remover(Hash *tabela, int chave, int ender, int funcao, int sond);
+void mostrarTabela(Hash *tabela);
+int converterStringInt(char *str);
+int funcaoHashing(int chave, int TABLE_SIZE, int funcao);
+
+int buscarSemColisao(Hash *tabela, int chave, int funcao);
+int inserirSemColisao(Hash *tabela, int chave, int funcao);
+int removerSemColisao(Hash *tabela, int chave, int funcao);
+int buscarEndAberto(Hash *tabela, int chave, int funcao, int sond);
+int inserirEndAberto(Hash *tabela, int chave, int funcao, int sond);
+int removerEndAberto(Hash *tabela, int chave, int funcao, int sond);
+int sondagem(int pos, int chave, int i, int TABLE_SIZE, int sond);
+int sondagemLinear(int pos, int i, int TABLE_SIZE);
+int sondagemQuadratica(int pos, int i, int TABLE_SIZE);
+int duploHash(int H1, int chave, int i, int TABLE_SIZE);
+int buscarEndFechado(Hash *tabela, int chave, int funcao);
+int inserirEndFechado(Hash *tabela, int chave, int funcao);
+int removerEndFechado(Hash *tabela, int chave, int funcao);
+int chaveDivisao(int chave, int TABLE_SIZE);
+int chaveMultiplicacao(int chave, int TABLE_SIZE);
+int chaveDobra(int chave, int TABLE_SIZE);
+int converterStringInt(char *str);
+
+
+
+
 
 /******************************************************************************/
 /** Alocação e liberação de memória *******************************************/
@@ -129,7 +162,7 @@ int buscarSemColisao(Hash *tabela, int chave, int funcao)
     if(tabela->itens[pos] == NULL)
         return -1;
 
-    if(tabela->itens[pos] == chave)
+    if((int)tabela->itens[pos] == (int)chave)
         return pos;
 
     return -1;
